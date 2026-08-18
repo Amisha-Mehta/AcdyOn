@@ -3,19 +3,11 @@ import { Btn, Icon, Section } from './ui';
 import SplitText from './SplitText';
 
 export default function Hero() {
-  const slides = [
-    'Graduates at the Kennedy University convocation',
-    'Executive cohort, London',
-    'Academic partner session, Switzerland',
-    'Applied AI workshop',
-    'Global learners gathering',
-  ];
   const tickers = [
     'Rajan M. from India enrolled in DBA',
     'Elena F. joined AI & Automation Mastery',
     'Omar A. began his doctoral pathway',
   ];
-  const [slide, setSlide] = useState(0);
   const [ticker, setTicker] = useState(0);
 
   useEffect(() => {
@@ -38,17 +30,6 @@ export default function Hero() {
           {tickers[ticker]}
         </p>
         <p className="partners">Partners · Kennedy University · Dunster College</p>
-      </div>
-      <div className="hero-photo">
-        <div className="photo-copy">
-          <span>GLOBAL CONVOCATION</span>
-          <b>{slides[slide]}</b>
-        </div>
-        <div className="paddles">
-          <button onClick={() => setSlide((slide + 4) % 5)} aria-label="Previous slide">←</button>
-          <em>{slide + 1} / 5</em>
-          <button onClick={() => setSlide((slide + 1) % 5)} aria-label="Next slide">→</button>
-        </div>
       </div>
     </Section>
   );
