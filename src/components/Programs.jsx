@@ -104,9 +104,10 @@ export function Journey() {
 //   );
 // }
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -138,72 +139,58 @@ export function Selector() {
     ],
   ];
 
-  const [active, setActive] = useState(0);
-
   const listRef = useRef(null);
   const fillRef = useRef(null);
   const itemRefs = useRef([]);
   const slideRefs = useRef([]);
   const pinRef = useRef(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     const listItems = itemRefs.current;
     const slides = slideRefs.current;
     const fill = fillRef.current;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: pinRef.current,
-          start: 'top top',
-          end: '+=' + listItems.length * 50 + '%',
-          pin: true,
-          scrub: true,
-          // markers: true,
-          onUpdate: (self) => {
-            const idx = Math.min(
-              listItems.length - 1,
-              Math.floor(self.progress * listItems.length)
-            );
-            setActive(idx);
-          },
-        },
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: pinRef.current,
+        start: 'top top',
+        end: '+=' + listItems.length * 50 + '%',
+        pin: true,
+        scrub: true,
+      },
+    });
+
+    // First element visible, set the marker
+    fill &&
+      gsap.set(fill, {
+        scaleY: 1 / listItems.length,
+        transformOrigin: 'top left',
       });
 
-      // First element visible, set the marker
-      fill &&
-        gsap.set(fill, {
-          scaleY: 1 / listItems.length,
-          transformOrigin: 'top left',
-        });
+    listItems.forEach((item, i) => {
+      const previousItem = listItems[i - 1];
+      if (previousItem) {
+        tl.set(item, { color: 'var(--cream)', opacity: 1 }, 0.5 * i)
+          .to(slides[i], { autoAlpha: 1, duration: 0.2 }, '<')
+          .set(previousItem, { color: 'var(--cream)', opacity: 0.4 }, '<')
+          .to(slides[i - 1], { autoAlpha: 0, duration: 0.2 }, '<');
+      } else {
+        gsap.set(item, { color: 'var(--cream)', opacity: 1 });
+        gsap.set(slides[i], { autoAlpha: 1 });
+      }
+    });
 
-      listItems.forEach((item, i) => {
-        const previousItem = listItems[i - 1];
-        if (previousItem) {
-          tl.set(item, { color: '#0ae448' }, 0.5 * i)
-            .to(slides[i], { autoAlpha: 1, duration: 0.2 }, '<')
-            .set(previousItem, { color: '#fffce1' }, '<')
-            .to(slides[i - 1], { autoAlpha: 0, duration: 0.2 }, '<');
-        } else {
-          gsap.set(item, { color: '#0ae448' });
-          gsap.set(slides[i], { autoAlpha: 1 });
-        }
-      });
-
-      tl.to(
-        fill,
-        {
-          scaleY: 1,
-          transformOrigin: 'top left',
-          ease: 'none',
-          duration: tl.duration(),
-        },
-        0
-      ).to({}, {}); // small pause before un-pin
-    }, pinRef);
-
-    return () => ctx.revert();
-  }, []);
+    tl.to(
+      fill,
+      {
+        scaleY: 1,
+        transformOrigin: 'top left',
+        ease: 'none',
+        duration: tl.duration(),
+      },
+      0
+    ).to({}, {}); // small pause before un-pin
+  }, { scope: pinRef });
 
   return (
     <Section tone="dark2">
@@ -213,12 +200,12 @@ export function Selector() {
 
       <div className="section pin-section" ref={pinRef} style={{ minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
         <div className="content container" style={{ display: 'flex', position: 'relative', width: '100%' }}>
-          
+
           <div style={{ flex: '0 0 30%', position: 'relative' }}>
             <ul className="list" ref={listRef} style={{ listStyle: 'none', margin: 0, padding: 0 }}>
               {tabs.map((tab, i) => (
-                <li 
-                  key={tab[0]} 
+                <li
+                  key={tab[0]}
                   ref={(el) => (itemRefs.current[i] = el)}
                   style={{ fontSize: 'clamp(24px, 3vw, 36px)', fontWeight: '530', letterSpacing: '-0.055em', marginBottom: '30px', color: 'var(--cream)' }}
                 >
@@ -243,7 +230,7 @@ export function Selector() {
                   <p style={{ color: '#d2dad2', marginBottom: '24px' }}>{tab[2]}</p>
                   <Btn>Explore this path →</Btn>
                 </div>
-                
+
                 <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
                   <img src={tab[3]} alt={tab[0]} style={{ width: '100%', maxWidth: '350px', borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }} />
                 </div>

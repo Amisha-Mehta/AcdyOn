@@ -19,28 +19,60 @@ function ProcessMotion() {
 
   useGSAP(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    
+    let timeline;
+    
     const buildTimeline = () => {
+      // Clear inline styles before recalculating states so Flip gets the true natural position
+      gsap.set(box.current, { clearProps: 'all' });
+      
       const secondState = Flip.getState(second.current);
       const thirdState = Flip.getState(third.current);
       const fourthState = Flip.getState(fourth.current);
-      const timeline = gsap.timeline({ scrollTrigger: { trigger: initial.current, start: 'top 65%', endTrigger: fourth.current, end: 'bottom 65%', scrub: 1, invalidateOnRefresh: true } });
-      timeline.add(Flip.fit(box.current, secondState, { ease: 'none', duration: 1 }))
+      
+      const tl = gsap.timeline({ 
+        scrollTrigger: { 
+          trigger: initial.current, 
+          start: 'top 65%', 
+          endTrigger: fourth.current, 
+          end: 'bottom 65%', 
+          scrub: 1,
+          invalidateOnRefresh: true
+        } 
+      });
+      
+      tl.add(Flip.fit(box.current, secondState, { ease: 'none', duration: 1 }))
         .add(Flip.fit(box.current, thirdState, { ease: 'none', duration: 1 }))
         .add(Flip.fit(box.current, fourthState, { ease: 'none', duration: 1 }));
+        
       let displayedStep = 1;
-      timeline.eventCallback('onUpdate', () => {
-        const nextStep = Math.min(4, Math.floor(timeline.time()) + 1);
+      tl.eventCallback('onUpdate', () => {
+        const nextStep = Math.min(4, Math.floor(tl.time()) + 1);
         if (nextStep !== displayedStep) {
           displayedStep = nextStep;
           setActiveStep(nextStep);
         }
       });
-      return timeline;
+      
+      return tl;
     };
-    let timeline = buildTimeline();
-    const onResize = () => { timeline.kill(); timeline = buildTimeline(); ScrollTrigger.refresh(); };
+
+    timeline = buildTimeline();
+
+    // On resize, we must kill the old timeline, clear props, and rebuild.
+    const onResize = () => { 
+      if (timeline) timeline.kill(); 
+      timeline = buildTimeline(); 
+      ScrollTrigger.refresh(); 
+    };
+    
     window.addEventListener('resize', onResize);
-    return () => { window.removeEventListener('resize', onResize); timeline.kill(); };
+    
+    return () => { 
+      window.removeEventListener('resize', onResize); 
+      if (timeline) timeline.kill();
+      gsap.set(box.current, { clearProps: 'all' });
+    };
   }, { scope });
 
   const description = 'Clear next steps, thoughtful advice, and support that stays personal.';
