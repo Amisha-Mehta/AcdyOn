@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Btn, Icon, Section } from './ui';
+import SplitText from './SplitText';
 
 export default function Hero() {
   const slides = [
@@ -26,7 +27,7 @@ export default function Hero() {
     <Section tone="dark" className="hero">
       <div className="hero-copy">
         <p className="eyebrow">Recognized at Kennedy University</p>
-        <h1>Your next credential should carry real authority.</h1>
+        <SplitText text="Your next credential should carry real authority." />
         <p className="lead">
           Start with an eligibility review designed around your experience,
           ambitions, and the recognition you want to earn.
