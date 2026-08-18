@@ -9,8 +9,8 @@ gsap.registerPlugin(ScrollTrigger, GSAPSplitText, useGSAP);
 export default function SplitText({
   text,
   className = '',
-  delay = 50,
-  duration = 1.25,
+  delay = 30,
+  duration = 0.5,
   ease = 'power3.out',
   splitType = 'chars',
   from = { opacity: 0, y: 40 },

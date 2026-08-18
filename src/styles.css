@@ -348,7 +348,7 @@ h2 {
    HERO
    ============================================ */
 .hero {
-  padding-top: 88px;
+  padding-top: 20px;
   padding-bottom: 88px;
 }
 
@@ -1477,6 +1477,80 @@ body.dark-mode .process-motion__box{background:#b3c3ae;color:#152016}body.dark-m
 body.dark-mode .process-motion__box{background:#b3c3ae;color:#152016}
 body.dark-mode .process-motion__marker{color:var(--muted)}
 
+
+.pin-section {
+  border-top: dashed 2px var(--color-surface50);
+  border-bottom: dashed 2px var(--color-surface50);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  padding: 0 10px;
+  position: relative;
+}
+
+.content .list {
+  font-size: 30px;
+  color: var(--color-surface-white);
+  margin: 0;
+  padding: 0;
+  padding-right: 10px;
+  list-style: none;
+  flex-grow: 0;
+}
+
+.content .fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background-color: var(--color-shockingly-green);
+}
+
+.content .right {
+  flex-grow: 1;
+  position: relative;
+  min-height: 300px;
+}
+
+.right .slide {
+  position: absolute;
+  width: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: 10px;
+}
+
+.right .slide img {
+  width: 100%;
+  max-width: 300px;
+  display: block;
+  border-radius: 10px;
+}
+
+.tabbody {
+  margin-top: 3rem;
+  color: var(--color-surface-white);
+}
+.tabbody small {
+  display: block;
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+
 @media(max-width:640px){
   .process-motion-section{padding-bottom:36px}
   .process-motion__stage{height:1020px}
@@ -1500,3 +1574,4 @@ body.dark-mode .process-motion__marker{color:var(--muted)}
   .hero .tile-content { min-height: auto; }
   .hero-copy { width: 100%; }
 }
+
