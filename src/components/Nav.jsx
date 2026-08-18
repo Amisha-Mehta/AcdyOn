@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DotField from '../DotField';
 import { Btn } from './ui';
 
@@ -21,6 +21,16 @@ const links = ['Home', 'Programs', 'Doctoral', 'Universities', 'Resources', 'Abo
 export default function Nav() {
   const [open, setOpen] = useState(null);
   const [mobile, setMobile] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('acdyon-theme');
+    return saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  useEffect(() => {
+    document.body.classList.toggle('dark-mode', darkMode);
+    document.documentElement.style.colorScheme = darkMode ? 'dark' : 'light';
+    localStorage.setItem('acdyon-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
 
   return (
     <header>
@@ -42,6 +52,9 @@ export default function Nav() {
           <div className="nav-cta">
             <Btn className="btn-nav">Book Consultation</Btn>
           </div>
+          <button className="theme-toggle" onClick={() => setDarkMode(value => !value)} aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`} aria-pressed={darkMode}>
+            <span aria-hidden="true">{darkMode ? '☼' : '◐'}</span>
+          </button>
           <button
             className="hamburger"
             onClick={() => { setMobile(!mobile); setOpen(null); }}
