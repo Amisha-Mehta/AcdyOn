@@ -1443,6 +1443,55 @@ body.dark-mode .chips span { background: transparent; }
 .network-char { display:inline-block;will-change:transform; }
 @media(max-width:735px){.horizontal-network{height:auto;margin:-70px 0 50px;padding:68px 0 50px;overflow:visible}.horizontal-network__text{width:auto;padding:0;white-space:normal;font-size:clamp(42px,14vw,76px)}}
 
+/* Scroll-driven Flip path following the process overview. */
+/*
+.process-motion-section{padding-top:36px;padding-bottom:48px}.process-motion{position:relative}.process-motion__stage{position:relative;min-height:900px;border-top:1px solid var(--line);border-bottom:0;overflow:hidden}
+.process-motion__point{position:absolute;display:grid;place-items:center;width:132px;height:132px;border:1px dashed var(--line);border-radius:50%}.process-motion__initial{left:61%;top:8%}.process-motion__second{left:10%;top:40%}.process-motion__third{right:9%;top:40%;bottom:auto}.process-motion__fourth{left:10%;top:68%;bottom:auto}
+.process-motion__box,.process-motion__marker{display:grid;place-items:center;width:92px;height:92px;border-radius:50%;font-family:'Geist Mono',monospace;font-size:14px;font-weight:600}.process-motion__box{position:relative;z-index:2;background:var(--forest);color:#fff}.process-motion__marker{border:1px solid var(--line);color:var(--muted)}.process-motion__step{position:absolute;top:calc(100% + 15px);left:0;width:225px}.process-motion__step b{font:11px 'Geist Mono',monospace;color:var(--forest)}.process-motion__step h3{margin:5px 0 4px;font-size:15px;line-height:1.2}.process-motion__step p{color:var(--muted);font-size:12px;line-height:1.45}.process-motion__caption{max-width:280px;margin-top:138px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+body.dark-mode .process-motion__box{background:#b3c3ae;color:#152016}body.dark-mode .process-motion__marker{color:var(--muted)}
+@media(max-width:640px){.process-motion-section{padding-bottom:36px}.process-motion__stage{min-height:820px}.process-motion__point{width:102px;height:102px}.process-motion__box,.process-motion__marker{width:70px;height:70px}.process-motion__step{width:155px}.process-motion__step h3{font-size:13px}.process-motion__step p{font-size:11px}.process-motion__initial{left:auto;right:12%;top:5%}.process-motion__second{left:8%;top:31%}.process-motion__third{right:9%;top:54%;bottom:auto}.process-motion__fourth{left:8%;top:74%;bottom:auto}}
+*/
+
+/* Scroll-driven Flip path following the process overview. */
+.process-motion-section{padding-top:36px;padding-bottom:48px}
+.process-motion{position:relative}
+.process-motion__stage{position:relative;height:1180px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+.process-motion__point{position:absolute;display:grid;place-items:center;width:132px;height:132px;border:1px dashed var(--line);border-radius:50%}
+
+/* Zigzag: right → left → right → left, fixed 260px vertical step */
+.process-motion__initial{left:auto;right:9%;top:0}
+.process-motion__second{left:9%;right:auto;top:260px}
+.process-motion__third{left:auto;right:9%;top:520px}
+.process-motion__fourth{left:9%;right:auto;top:780px}
+
+.process-motion__box,.process-motion__marker{display:grid;place-items:center;width:92px;height:92px;border-radius:50%;font-family:'Geist Mono',monospace;font-size:14px;font-weight:600}
+.process-motion__box{position:relative;z-index:2;background:var(--forest);color:#fff}
+.process-motion__marker{border:1px solid var(--line);color:var(--muted)}
+.process-motion__step{position:absolute;top:calc(100% + 15px);left:0;width:225px}
+.process-motion__step b{font:11px 'Geist Mono',monospace;color:var(--forest)}
+.process-motion__step h3{margin:5px 0 4px;font-size:15px;line-height:1.2}
+.process-motion__step p{color:var(--muted);font-size:12px;line-height:1.45}
+.process-motion__caption{max-width:280px;padding-top:20px;color:var(--muted);font-size:14px}
+
+body.dark-mode .process-motion__box{background:#b3c3ae;color:#152016}
+body.dark-mode .process-motion__marker{color:var(--muted)}
+
+@media(max-width:640px){
+  .process-motion-section{padding-bottom:36px}
+  .process-motion__stage{height:1020px}
+  .process-motion__point{width:102px;height:102px}
+  .process-motion__box,.process-motion__marker{width:70px;height:70px}
+  .process-motion__step{width:155px}
+  .process-motion__step h3{font-size:13px}
+  .process-motion__step p{font-size:11px}
+
+  .process-motion__initial{left:auto;right:12%;top:0}
+  .process-motion__second{left:8%;right:auto;top:220px}
+  .process-motion__third{left:auto;right:9%;top:440px}
+  .process-motion__fourth{left:8%;right:auto;top:660px}
+}
+
 @media (max-width: 1068px) {
   .hero-copy { width: min(650px, 78%); }
 }

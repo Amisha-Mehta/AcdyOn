@@ -1,11 +1,57 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { Flip } from 'gsap/Flip';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import DotField from '../DotField';
 import { Btn, Head, Section } from './ui';
+
+gsap.registerPlugin(Flip, ScrollTrigger, useGSAP);
+
+function ProcessMotion() {
+  const [activeStep, setActiveStep] = useState(1);
+  const scope = useRef(null);
+  const initial = useRef(null);
+  const second = useRef(null);
+  const third = useRef(null);
+  const fourth = useRef(null);
+  const box = useRef(null);
+
+  useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const buildTimeline = () => {
+      const secondState = Flip.getState(second.current);
+      const thirdState = Flip.getState(third.current);
+      const fourthState = Flip.getState(fourth.current);
+      const timeline = gsap.timeline({ scrollTrigger: { trigger: initial.current, start: 'top 65%', endTrigger: fourth.current, end: 'bottom 65%', scrub: 1, invalidateOnRefresh: true } });
+      timeline.add(Flip.fit(box.current, secondState, { ease: 'none', duration: 1 }))
+        .add(Flip.fit(box.current, thirdState, { ease: 'none', duration: 1 }))
+        .add(Flip.fit(box.current, fourthState, { ease: 'none', duration: 1 }));
+      let displayedStep = 1;
+      timeline.eventCallback('onUpdate', () => {
+        const nextStep = Math.min(4, Math.floor(timeline.time()) + 1);
+        if (nextStep !== displayedStep) {
+          displayedStep = nextStep;
+          setActiveStep(nextStep);
+        }
+      });
+      return timeline;
+    };
+    let timeline = buildTimeline();
+    const onResize = () => { timeline.kill(); timeline = buildTimeline(); ScrollTrigger.refresh(); };
+    window.addEventListener('resize', onResize);
+    return () => { window.removeEventListener('resize', onResize); timeline.kill(); };
+  }, { scope });
+
+  const description = 'Clear next steps, thoughtful advice, and support that stays personal.';
+  return <Section tone="parchment" className="process-motion-section"><div className="container process-motion" ref={scope}><p className="eyebrow">Guidance in motion</p><div className="process-motion__stage"><div className="process-motion__point process-motion__initial" ref={initial}><div className="process-motion__box" ref={box}>{String(activeStep).padStart(2, '0')}</div><div className="process-motion__step"><b>01</b><h3>Consultation</h3><p>{description}</p></div></div><div className="process-motion__point process-motion__second"><div className="process-motion__marker" ref={second}>02</div><div className="process-motion__step"><b>02</b><h3>Eligibility Review</h3><p>{description}</p></div></div><div className="process-motion__point process-motion__third"><div className="process-motion__marker" ref={third}>03</div><div className="process-motion__step"><b>03</b><h3>Program Selection</h3><p>{description}</p></div></div><div className="process-motion__point process-motion__fourth"><div className="process-motion__marker" ref={fourth}>04</div><div className="process-motion__step"><b>04</b><h3>Enrollment &amp; Guidance</h3><p>{description}</p></div></div></div><p className="process-motion__caption">A clear path, from the first conversation to your programme start.</p></div></Section>;
+}
 
 export function Process() {
   const steps = ['Consultation', 'Eligibility Review', 'Program Selection', 'Enrollment & Guidance'];
   return (
-    <Section tone="parchment">
+    <>
+    {/* <Section tone="parchment">
       <div className="container">
         <Head eyebrow="Process">A guided four-step process from consultation to programme start</Head>
         <div className="process">
@@ -18,7 +64,9 @@ export function Process() {
           ))}
         </div>
       </div>
-    </Section>
+    </Section> */}
+    <ProcessMotion />
+    </>
   );
 }
 
