@@ -11,10 +11,6 @@
   <a href="./DECISIONS.md"><strong>📖 Read decisions</strong></a>
 </p>
 
-![React](https://img.shields.io/badge/React-UI-61DAFB?style=for-the-badge&logo=react&logoColor=111111)
-![Vite](https://img.shields.io/badge/Vite-Build-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Responsive](https://img.shields.io/badge/Responsive-390px%20%E2%86%92%201440px-183D32?style=for-the-badge)
-
 </div>
 
 <br />
