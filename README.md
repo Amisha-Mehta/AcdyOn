@@ -1,145 +1,114 @@
-# AcdyOn — Global Learning & Recognition
+# AcdyOn
 
-<p align="center">
-  <strong>A considered digital front door for ambitious professionals.</strong><br />
-  Executive education · Applied AI · Doctoral pathways · Academic recognition
-</p>
+### Global learning and academic recognition for ambitious professionals.
 
-<p align="center">
-  <a href="https://acdyon.com/">Live reference site</a> ·
-  <a href="#getting-started">Run locally</a> ·
+AcdyOn is a responsive homepage concept for a premium learning platform offering executive education, applied AI programmes, doctoral pathways, and academic recognition.
+
+The design goal is simple: make the value legible immediately, then help a visitor move from curiosity to a considered consultation.
+
+<p>
+  <a href="https://acdyon.com/">Reference site</a> ·
   <a href="./DECISIONS.md">Design decisions</a>
 </p>
 
-<p align="center">
-  <img alt="React" src="https://img.shields.io/badge/React-UI-61DAFB?style=flat-square&logo=react&logoColor=111" />
-  <img alt="Vite" src="https://img.shields.io/badge/Vite-build-646CFF?style=flat-square&logo=vite&logoColor=fff" />
-  <img alt="Responsive" src="https://img.shields.io/badge/layout-responsive-183D32?style=flat-square" />
-  <img alt="Status" src="https://img.shields.io/badge/status-portfolio%20build-E7F4E8?style=flat-square&labelColor=183D32" />
-</p>
+![AcdyOn homepage visual direction](https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1600&q=85)
 
-<br />
+## The experience
 
-> **The brief:** make someone understand the value in three seconds, then give them a reason to explore.
-
-## ✦ What this is
-
-This is a responsive homepage redesign for **AcdyOn**, shaped around a premium editorial feel rather than a generic education template. The experience moves from a clear credential-led hero into programmes, pathways, trust signals, process, FAQ, and a final consultation CTA.
-
-The visual language is intentionally quiet: warm paper surfaces, forest green, generous spacing, Geist typography, subtle grid/dot fields, and motion that supports orientation instead of competing for attention.
-
-## ✨ Experience map
+The homepage is structured as a guided decision path rather than a catalogue of disconnected sections.
 
 ```mermaid
 flowchart LR
-    A[First impression\nClear authority-led value prop] --> B[Explore\nPrograms & pathways]
-    B --> C[Understand\nJourney, trust & network]
-    C --> D[Decide\nProcess + FAQ]
-    D --> E[Act\nBook eligibility review]
-    style A fill:#183D32,color:#F7FFF8,stroke:#183D32
-    style E fill:#B9E6C3,color:#183D32,stroke:#183D32
+  H[Hero\nUnderstand the promise] --> P[Pathways\nFind a relevant direction]
+  P --> T[Trust\nSee institutions and fit]
+  T --> W[How it works\nReduce uncertainty]
+  W --> C[Consultation\nTake the next step]
 ```
 
-## 🧭 Homepage sections
+| Section | Job to be done |
+| --- | --- |
+| Hero | Establish authority, relevance, and one primary action |
+| Network | Give context to AcdyOn’s international academic positioning |
+| Programmes | Let visitors scan the available learning directions |
+| Journey | Translate ambition into a possible progression |
+| Advantage | Explain why the consultation and matching process matters |
+| Featured AI track | Show a concrete programme, not only a promise |
+| University network | Add academic context before the CTA |
+| Process + FAQ | Answer high-consideration questions without adding pressure |
+| Final CTA | Return to one clear next step |
 
-| Moment | What the visitor gets | Interaction |
-| --- | --- | --- |
-| Hero | A direct value proposition around authority and recognition | Split-text entrance + CTA |
-| Network | Context for geographic reach and academic partners | Animated marquee / scroll title |
-| Programmes | A scan-friendly view of the learning routes | Hover states + pathway links |
-| Featured AI track | A concrete example of applied learning | Curriculum / mentorship / project framing |
-| University network | Academic context before conversion | Registry-style responsive layout |
-| Process & FAQ | Objection handling without pressure | Accordion + scroll-driven process motion |
-| Final CTA | One clear next action | Consultation CTA |
+## What makes it feel intentional
 
-## 📊 Interaction budget
+**A quiet visual system.** Warm paper, forest green, restrained borders, and Geist typography create a premium editorial tone without relying on heavy gradients or decorative clutter.
 
-The page uses a small number of purposeful interactions so the hierarchy stays readable.
+**Motion with a job.** Scroll reveals, split-text entrance, the moving network passage, and the process motion help the visitor understand progression. Reduced-motion preferences disable non-essential animation.
 
-```mermaid
-pie title Interaction mix
-    "Navigation + menu" : 30
-    "Scroll reveal / motion" : 25
-    "Pathway and FAQ exploration" : 25
-    "CTA moments" : 20
-```
+**Responsive by design.** The layout collapses at tablet and mobile widths, converting multi-column content into readable single-column sections and replacing desktop navigation with a mobile menu.
 
-## 🎨 Visual direction
+**Content restraint.** The homepage avoids adding unsupported performance metrics or invented social proof. Claims and institutional information should still be reviewed by AcdyOn before production publication.
 
-<table>
-  <tr>
-    <td width="50%"><img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80" alt="University learning environment" /></td>
-    <td width="50%">
-      <h3>Premium, not loud.</h3>
-      <p>The design uses editorial pacing and restrained contrast to make high-consideration decisions feel clear and credible.</p>
-      <p><code>#183D32</code> forest · <code>#FCFBF8</code> paper · Geist Sans · Geist Mono</p>
-    </td>
-  </tr>
-</table>
-
-## 🧱 Component structure
+## Implementation
 
 ```text
 src/
-├── HomePage.jsx              # Page composition
-├── styles.css                # Design system, responsive rules, motion
-├── DotField.jsx              # Decorative background texture
+├── main.jsx                 # React entry point
+├── HomePage.jsx             # Page-level composition
+├── styles.css               # Tokens, layout, responsive CSS, motion
+├── DotField.jsx             # Decorative background texture
 └── components/
-    ├── Nav.jsx               # Desktop / mobile navigation + theme control
-    ├── Hero.jsx              # First-screen value proposition
-    ├── Programs.jsx          # Programme cards and pathway selector
-    ├── NetworkStats.jsx      # Network facts and marquee treatment
+    ├── Nav.jsx              # Navigation, menus, theme toggle
+    ├── Hero.jsx             # Hero copy and entrance treatment
+    ├── Programs.jsx         # Programme cards, journey, selector
+    ├── NetworkStats.jsx     # Stats, marquee, network title
     ├── Trust.jsx             # Advantage, featured track, network, stories
-    ├── Closing.jsx           # Process, FAQ, CTA and footer
-    ├── SplitText.jsx         # Lightweight entrance animation
-    └── ui.jsx                # Shared buttons, icons, sections, reveal hook
+    ├── Closing.jsx           # Process, FAQ, CTA, footer
+    ├── SplitText.jsx         # Character-level entrance animation
+    └── ui.jsx                # Shared buttons, icons, reveal hook
 ```
 
-## 🛠️ Tech choices
+### Stack
 
-- **React** for composable sections and local interaction state.
-- **Vite** for a fast, minimal build pipeline.
-- **CSS-first visual system** for precise responsive control and easy handoff.
-- **GSAP / IntersectionObserver** for deliberate entrance and scroll motion.
-- **Local Geist fonts** to keep typography consistent without relying on a font request at runtime.
+| Tool | Reason |
+| --- | --- |
+| React | Composable sections and local interaction state |
+| Vite | Fast development server and production build |
+| CSS | Precise art direction and responsive control |
+| GSAP | Controlled scroll and entrance motion |
+| Geist | Consistent local typography without a runtime font dependency |
 
-## Getting started
-
-### Requirements
-
-- Node.js 18+
-- npm 9+
-
-### Install and run
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite, usually `http://localhost:5173`.
+Open the URL printed by Vite, usually `http://localhost:5173`.
 
-### Production build
+Create a production build with:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## ✅ Quality checklist
+The generated `dist/` folder can be deployed to Vercel, Netlify, or GitHub Pages.
 
-- Responsive layout includes a mobile breakpoint for narrow screens.
-- Reduced-motion users are respected through `prefers-reduced-motion` rules.
-- Navigation, FAQ, theme control, and CTAs are keyboard-focusable controls.
-- The page is static and deployable to Vercel, Netlify, or GitHub Pages.
-- No runtime scraper or external data dependency is required to render the page.
+## Quality and boundaries
 
-## Honesty note
+- Responsive breakpoints cover desktop, tablet, and narrow mobile layouts.
+- Keyboard-accessible buttons are used for menus, tabs, FAQs, and theme switching.
+- `prefers-reduced-motion` is respected.
+- The page renders without a runtime scraper or API dependency.
+- This is a front-end exercise; it does not include authentication, CRM submission, analytics, or an admissions backend.
 
-This repository is a design and front-end exercise. It does not include a live admissions backend, CRM submission, analytics pipeline, or authentication flow. Any programme claims, partner information, testimonials, and numerical proof points should be reviewed by AcdyOn before production publication.
+## Next production steps
 
-See [DECISIONS.md](./DECISIONS.md) for the reasoning behind the content and ingestion approach.
+1. Replace illustrative content with AcdyOn-approved copy and verified institution data.
+2. Connect the consultation CTA to a validated, consent-aware form endpoint.
+3. Add analytics for pathway views, FAQ engagement, and CTA completion.
+4. Run final accessibility, performance, and cross-device checks against the deployed URL.
 
 ---
 
-<p align="center">Built with care for AcdyOn ✦</p>
+<p align="center">Built with care for AcdyOn · 2026</p>
