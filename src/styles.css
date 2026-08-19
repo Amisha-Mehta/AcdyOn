@@ -466,32 +466,92 @@ h2 {
 }
 
 /* ============================================
-   MARQUEE
+   PARTNER OPTION WHEEL
    ============================================ */
-.marquee {
-  overflow: hidden;
+.partner-wheel-panel {
   border-block: 1px solid var(--line);
-  padding: 17px 0;
+  padding-block: clamp(1.25rem, 3vw, 2rem);
+  height: 100%;
+  width: 100%;
 }
 
-.marquee > div {
+.partner-wheel-section {
   display: flex;
-  width: max-content;
-  animation: scroll 36s linear infinite;
+  align-items: center;
+  min-height: 100svh;
+  padding-inline: 0;
+  padding-block: clamp(4.5rem, 10vw, 7rem);
 }
 
-.marquee span {
-  margin-right: 72px;
-  color: #6d766e;
-  font-size: 12px;
+.partner-wheel-section .tile-content { width: 100%; }
+
+.partner-wheel-panel .container {
+  max-width: none;
+  padding-inline: max(24px, calc((100vw - 1120px) / 2));
+}
+
+.partner-wheel-panel__label,
+.partner-wheel-panel__hint {
+  color: var(--muted);
+  font-size: .69rem;
   font-weight: 600;
-  letter-spacing: 0.13em;
+  letter-spacing: .13em;
+  text-transform: uppercase;
 }
 
-@keyframes scroll {
-  to {
-    transform: translateX(-50%);
-  }
+.partner-wheel-panel__label { margin-bottom: .5rem; }
+
+.partner-wheel-panel__hint {
+  margin: .5rem 0 0;
+  font-weight: 400;
+  letter-spacing: .04em;
+  text-transform: none;
+}
+
+.option-wheel-root {
+  position: relative;
+  width: 100%;
+  height: min(58svh, 36rem);
+  overflow: hidden;
+  outline: none;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+
+.option-wheel-root.is-dragging { cursor: grabbing; }
+
+.option-wheel-root:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.option-wheel-item {
+  position: absolute;
+  top: 50%;
+  color: var(--ow-text-color);
+  cursor: pointer;
+  font-size: var(--ow-font-size);
+  font-weight: 300;
+  letter-spacing: -.035em;
+  line-height: 1;
+  white-space: nowrap;
+  will-change: transform, opacity, filter;
+}
+
+.option-wheel-item--left { left: var(--ow-inset); transform-origin: left center; }
+.option-wheel-item--right { right: var(--ow-inset); transform-origin: right center; }
+
+.option-wheel-item.is-active {
+  color: var(--ow-active-color);
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .partner-wheel-section { min-height: 85svh; }
+  .option-wheel-root { height: min(48svh, 24rem); }
+  .option-wheel-item { font-size: clamp(1.65rem, 9vw, 2.2rem); }
+  .partner-wheel-panel__hint { font-size: .64rem; }
 }
 
 /* ============================================

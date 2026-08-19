@@ -5,6 +5,7 @@ import { SplitText as GSAPSplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import { Head, Section } from './ui';
 import ScrollFloat from './ScrollFloat';
+import OptionWheel from './effects/OptionWheel';
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText, useGSAP);
 
@@ -64,12 +65,30 @@ export function Stats() {
 export function Marquee() {
   const partners = ['KENNEDY UNIVERSITY', 'DUNSTER COLLEGE', 'LSMT', 'EIMT', 'BIRCHWOOD', 'LSBS'];
   return (
-    <Section>
-      <div className="marquee">
-        <div>
-          {[...partners, ...partners].map((partner, index) => (
-            <span key={`${partner}-${index}`}>{partner}</span>
-          ))}
+    <Section className="partner-wheel-section">
+      <div className="partner-wheel-panel">
+        <div className="container">
+          <div className="partner-wheel-panel__label">Academic partners</div>
+        </div>
+        <OptionWheel
+          items={partners}
+          defaultSelected={0}
+          textColor="var(--muted)"
+          activeColor="var(--ink)"
+          fontSize={2.8}
+          spacing={1.45}
+          curve={1}
+          tilt={7}
+          blur={0.8}
+          fade={0.24}
+          minOpacity={0.14}
+          smoothing={110}
+          inset={48}
+          draggable
+          className="partner-wheel"
+        />
+        <div className="container">
+          <p className="partner-wheel-panel__hint">Scroll, drag, or use the arrow keys to explore.</p>
         </div>
       </div>
     </Section>

@@ -47,6 +47,7 @@ const OptionWheel = ({
   const onChangeRef = useRef(onChange);
   const selectedRef = useRef(defaultSelected);
   const wheelTimerRef = useRef(null);
+  const wheelAccumRef = useRef(0);
   const dragRef = useRef(null);
   const dragMovedRef = useRef(false);
   const audioRef = useRef(null);
@@ -177,20 +178,37 @@ const OptionWheel = ({
     const el = rootRef.current;
     if (!el) return;
     const onWheel = e => {
-      e.preventDefault();
       const cfg = cfgRef.current;
       const delta = e.deltaMode === 1 ? e.deltaY * 24 : e.deltaY;
-      // Cap each event at one step so notchy mouse wheels move exactly one
-      // option per click, while touchpads still scroll continuously.
-      const step = Math.max(-1, Math.min(1, delta / cfg.rowH));
-      applyTarget(targetRef.current + step, false);
+      const currentIndex = Math.round(targetRef.current);
+
+      // At either end, do not trap the page's scroll. The next wheel gesture
+      // continues into the surrounding document just like a native selector.
+      if (!cfg.loop && ((delta < 0 && currentIndex <= 0) || (delta > 0 && currentIndex >= cfg.count - 1))) {
+        wheelAccumRef.current = 0;
+        return;
+      }
+
+      e.preventDefault();
+      wheelAccumRef.current += delta;
+
+      // Turn continuous wheel / trackpad movement into discrete picker steps.
+      // Each threshold crossing immediately targets a whole option, so the
+      // wheel feels crisp instead of waiting for an idle-time snap.
+      const threshold = cfg.rowH * 0.5;
+      while (Math.abs(wheelAccumRef.current) >= threshold) {
+        const direction = wheelAccumRef.current > 0 ? 1 : -1;
+        applyTarget(Math.round(targetRef.current) + direction, true);
+        wheelAccumRef.current -= direction * threshold;
+      }
       if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
-      wheelTimerRef.current = setTimeout(() => applyTarget(targetRef.current, true), 140);
+      wheelTimerRef.current = setTimeout(() => { wheelAccumRef.current = 0; }, 200);
     };
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => {
       el.removeEventListener('wheel', onWheel);
       if (wheelTimerRef.current) clearTimeout(wheelTimerRef.current);
+      wheelAccumRef.current = 0;
     };
   }, [applyTarget]);
 
@@ -270,7 +288,7 @@ const OptionWheel = ({
       role="listbox"
       tabIndex={0}
       aria-label="Option wheel"
-      className={`relative h-full w-full select-none overflow-hidden outline-none [touch-action:none] ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}${className ? ` ${className}` : ''}`}
+      className={`option-wheel-root ${isDragging ? 'is-dragging' : ''}${className ? ` ${className}` : ''}`}
       style={{
         '--ow-text-color': textColor,
         '--ow-active-color': activeColor,
@@ -291,9 +309,7 @@ const OptionWheel = ({
           }}
           role="option"
           aria-selected={selectedIndex === index}
-          className={`absolute top-1/2 cursor-pointer whitespace-nowrap leading-none will-change-[transform,opacity,filter] [font-size:var(--ow-font-size)] [color:color-mix(in_srgb,var(--ow-active-color)_calc(var(--ow-p,0)*100%),var(--ow-text-color))] ${
-            side === 'right' ? 'right-[var(--ow-inset)] origin-right' : 'left-[var(--ow-inset)] origin-left'
-          } ${selectedIndex === index ? 'font-medium' : 'font-extralight'}`}
+          className={`option-wheel-item option-wheel-item--${side} ${selectedIndex === index ? 'is-active' : ''}`}
           onClick={() => handleItemClick(index)}
         >
           {label}
