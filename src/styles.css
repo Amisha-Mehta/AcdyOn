@@ -1519,6 +1519,9 @@ body.dark-mode .chips span { background: transparent; }
 .horizontal-network { display:flex;align-items:center;height:min(100vh,720px);margin:-112px max(-24px,calc((1280px - 100vw)/2)) 82px;overflow:hidden;border-bottom:1px solid var(--line); }
 .horizontal-network__text { display:flex;width:max-content;padding-left:100vw;white-space:nowrap;font-size:clamp(48px,10vw,150px);font-weight:530;letter-spacing:-.075em;line-height:1;color:var(--ink); }
 .network-char { display:inline-block;will-change:transform; }
+
+/* Scroll-scrubbed Academic Network heading. */
+.scroll-float{margin:0;overflow:hidden}.scroll-float-char{display:inline-block;will-change:opacity,transform}.network-scroll-float{max-width:760px;margin-inline:auto;font-size:clamp(31px,3.6vw,48px);font-weight:530;letter-spacing:-.055em;line-height:1.08}.centered .network-scroll-float{text-align:center}
 @media(max-width:735px){.horizontal-network{height:auto;margin:-70px 0 50px;padding:68px 0 50px;overflow:visible}.horizontal-network__text{width:auto;padding:0;white-space:normal;font-size:clamp(42px,14vw,76px)}}
 
 /* Scroll-driven Flip path following the process overview. */
@@ -1652,4 +1655,3 @@ body.dark-mode .process-motion__marker{color:var(--muted)}
   .hero .tile-content { min-height: auto; }
   .hero-copy { width: 100%; }
 }
-

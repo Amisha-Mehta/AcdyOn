@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText as GSAPSplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import { Head, Section } from './ui';
+import ScrollFloat from './ScrollFloat';
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText, useGSAP);
 
@@ -45,7 +46,7 @@ export function Stats() {
       <HorizontalNetworkTitle />
       <div className="container centered">
         <Head eyebrow="Academic network">
-          Academic partnerships and institutional signals that inform before enrollment
+          <ScrollFloat containerClassName="network-scroll-float">Academic partnerships and institutional signals that inform before enrollment</ScrollFloat>
         </Head>
         <div className="stats">
           {data.map(([number, label]) => (
