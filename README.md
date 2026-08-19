@@ -19,7 +19,13 @@
 
 <br />
 
-![AcdyOn academic learning environment](https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1800&q=85)
+<div align="center">
+
+| ✦ FIRST IMPRESSION | ✦ PRODUCT MOMENT | ✦ NEXT ACTION |
+| :---: | :---: | :---: |
+| Clear value proposition | Guided programme pathways | Eligibility review |
+
+</div>
 
 ## ✦ The idea
 
