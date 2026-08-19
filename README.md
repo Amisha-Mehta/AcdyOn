@@ -1,4 +1,4 @@
-![alt text](image.png)<div align="center">
+<div align="center">
 
 # AcdyOn
 
