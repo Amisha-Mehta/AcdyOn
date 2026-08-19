@@ -546,34 +546,98 @@ h2 {
 /* ============================================
    JOURNEY
    ============================================ */
-.journey {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  border-top: 1px solid var(--line);
-  border-left: 1px solid var(--line);
-}
+/* Journey — pinned scroll-tab reveal (adapted from Selector's mechanic) */
 
-.journey > div {
+.journey-pin {
+  position: relative;
+  min-height: 70vh;
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 24px 18px;
-  background: rgba(255, 255, 255, 0.34);
-  border-right: 1px solid var(--line);
+  align-items: center;
+  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  font-size: 13px;
+  margin-top: 40px;
 }
 
-.journey span {
-  max-width: 110px;
+.journey-pin__content {
+  display: flex;
+  gap: 60px;
+  width: 100%;
+  position: relative;
 }
 
-.journey b {
+.journey-pin__list-col {
+  flex: 0 0 34%;
+  position: relative;
+  padding-left: 24px;
+}
+
+.journey-pin__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.journey-pin__item {
+  font-size: clamp(20px, 2.4vw, 30px);
+  font-weight: 530;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  color: var(--ink);
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.journey-pin__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--forest);
+}
+
+.journey-pin__stage-col {
+  flex: 1;
+  position: relative;
+  min-height: 220px;
+}
+
+.journey-pin__slide {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.journey-pin__count {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.journey-pin__flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.journey-pin__flow b {
   font-weight: 400;
   color: var(--forest);
+  margin: 0 4px;
 }
 
-.journey + blockquote {
+/* Pull-quote — unchanged from the original .journey + blockquote rule */
+.journey-pin + .container > blockquote,
+.container blockquote {
   max-width: 760px;
   margin: 58px auto 0;
   font-size: 26px;
@@ -581,6 +645,20 @@ h2 {
   letter-spacing: -0.035em;
   line-height: 1.45;
   text-align: center;
+}
+
+@media (max-width: 900px) {
+  .journey-pin__content {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .journey-pin__list-col {
+    flex: none;
+    padding-left: 20px;
+  }
+  .journey-pin__stage-col {
+    min-height: 140px;
+  }
 }
 
 /* ============================================

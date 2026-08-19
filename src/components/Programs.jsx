@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { Btn, Head, Icon, Link, Section } from './ui';
 
 const programs = [
@@ -8,6 +11,8 @@ const programs = [
   ['brief', 'Executive Certifications', 'Build credible, modern expertise for your next chapter.'],
   ['spark', 'Corporate Training', 'Equip leadership teams for measurable transformation.'],
 ];
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function Programs() {
   return (
@@ -38,6 +43,64 @@ export function Journey() {
     ['Ambitious Builder', 'AI Mastery', 'Future-Ready Operator'],
     ['Established Contributor', 'Honorary Recognition', 'Visible Legacy'],
   ];
+
+  const listRef = useRef(null);
+  const fillRef = useRef(null);
+  const itemRefs = useRef([]);
+  const slideRefs = useRef([]);
+  const pinRef = useRef(null);
+
+  useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    const listItems = itemRefs.current;
+    const slides = slideRefs.current;
+    const fill = fillRef.current;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: pinRef.current,
+        start: 'top top',
+        end: '+=' + listItems.length * 50 + '%',
+        pin: true,
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    fill &&
+      gsap.set(fill, {
+        scaleY: 1 / listItems.length,
+        transformOrigin: 'top left',
+      });
+
+    listItems.forEach((item, i) => {
+      const previousItem = listItems[i - 1];
+      if (previousItem) {
+        tl.set(item, { opacity: 1 }, 0.5 * i)
+          .to(slides[i], { autoAlpha: 1, duration: 0.2 }, '<')
+          .set(previousItem, { opacity: 0.4 }, '<')
+          .to(slides[i - 1], { autoAlpha: 0, duration: 0.2 }, '<');
+      } else {
+        gsap.set(item, { opacity: 1 });
+        gsap.set(slides[i], { autoAlpha: 1 });
+      }
+    });
+
+    tl.to(
+      fill,
+      {
+        scaleY: 1,
+        transformOrigin: 'top left',
+        ease: 'none',
+        duration: tl.duration(),
+      },
+      0
+    ).to({}, {});
+
+    return () => tl.scrollTrigger?.kill();
+  }, { scope: pinRef });
+
   return (
     <Section>
       <div className="container">
@@ -47,18 +110,48 @@ export function Journey() {
         >
           Progress with intention. Be recognised for the work ahead.
         </Head>
-        <div className="journey">
-          {journeys.map(route => (
-            <div key={route[0]}>
-              {route.map((step, index) => (
-                <span key={step}>
-                  {step}
-                  {index < 2 && <b>→</b>}
-                </span>
+      </div>
+
+      <div className="journey-pin" ref={pinRef}>
+        <div className="journey-pin__content container">
+          <div className="journey-pin__list-col">
+            <ul className="journey-pin__list" ref={listRef}>
+              {journeys.map((route, i) => (
+                <li
+                  key={route[0]}
+                  ref={el => { itemRefs.current[i] = el; }}
+                  className="journey-pin__item"
+                >
+                  {route[0]}
+                </li>
               ))}
-            </div>
-          ))}
+            </ul>
+            <div className="journey-pin__fill" ref={fillRef} />
+          </div>
+
+          <div className="journey-pin__stage-col">
+            {journeys.map((route, i) => (
+              <div
+                className="journey-pin__slide"
+                key={route[0]}
+                ref={el => { slideRefs.current[i] = el; }}
+              >
+                <small className="journey-pin__count">{i + 1} / {journeys.length}</small>
+                <div className="journey-pin__flow">
+                  {route.map((step, index) => (
+                    <span key={step}>
+                      {step}
+                      {index < route.length - 1 && <b>→</b>}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+      </div>
+
+      <div className="container">
         <blockquote>
           "People do not buy a degree. They invest in credibility, authority,
           recognition, and professional transformation."
@@ -67,47 +160,6 @@ export function Journey() {
     </Section>
   );
 }
-
-// export function Selector() {
-//   const tabs = [
-//     ['AI / Tech', 'AI Practitioner · Automation Builder · Future-Ready Leader', 'Build the practical judgment and automation capability that modern work demands.'],
-//     ['Doctoral', 'Researcher · Executive Scholar · Industry Authority', 'Choose a flexible doctoral route shaped around your career experience.'],
-//     ['Recognition', 'Established Leader · Changemaker · Legacy Builder', 'Align your contribution with a recognition pathway that feels credible.'],
-//     ['Corporate', 'People Leader · Consultant · Team Builder', 'Create a tailored learning programme for your organisation\'s priorities.'],
-//   ];
-//   const [active, setActive] = useState(0);
-
-//   return (
-//     <Section tone="dark2">
-//       <div className="container selector">
-//         <Head eyebrow="Find your path">Choose The Path That Matches Your Goals</Head>
-//         <div className="tabbar" role="tablist">
-//           {tabs.map((tab, index) => (
-//             <button
-//               key={tab[0]}
-//               onClick={() => setActive(index)}
-//               className={index === active ? 'active' : ''}
-//               role="tab"
-//             >
-//               {tab[0]}
-//             </button>
-//           ))}
-//           <small>{active + 1} / 4</small>
-//         </div>
-//         <div className="tabbody">
-//           <p className="bodystrong">{tabs[active][1]}</p>
-//           <p>{tabs[active][2]}</p>
-//           <Btn>Explore this path →</Btn>
-//         </div>
-//       </div>
-//     </Section>
-//   );
-// }
-
-import { useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
 
 gsap.registerPlugin(ScrollTrigger);
 

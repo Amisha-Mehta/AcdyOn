@@ -1,5 +1,45 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { Btn, Head, Link, Section } from './ui';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+function CommitmentList({ items }) {
+  const listRef = useRef(null);
+
+  useGSAP(() => {
+    if (!listRef.current) return undefined;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    const rows = listRef.current.querySelectorAll('li');
+    gsap.set(rows, { opacity: 0, y: 14 });
+
+    const tween = gsap.to(rows, {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      ease: 'power2.out',
+      stagger: 0.12,
+      scrollTrigger: {
+        trigger: listRef.current,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      },
+    });
+
+    return () => tween.scrollTrigger?.kill();
+  }, { scope: listRef });
+
+  return (
+    <ul className="commitment__list" ref={listRef}>
+      {items.map(item => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  );
+}
 
 export function Advantage() {
   const items = [
@@ -13,6 +53,12 @@ export function Advantage() {
   const [expanded, setExpanded] = useState([]);
   const toggle = item =>
     setExpanded(v => (v.includes(item) ? v.filter(c => c !== item) : [...v, item]));
+
+  const commitments = [
+    'Academic fit before application',
+    'Clear guidance at every decision point',
+    'Global perspective, personal support',
+  ];
 
   return (
     <Section tone="parchment">
@@ -29,11 +75,7 @@ export function Advantage() {
             Our advisors begin with your experience, ambitions and the signal you
             need your next move to send.
           </p>
-          <ul>
-            <li>Academic fit before application</li>
-            <li>Clear guidance at every decision point</li>
-            <li>Global perspective, personal support</li>
-          </ul>
+          <CommitmentList items={commitments} />
         </article>
         <div className="cards advantage">
           {items.map(item => (
