@@ -179,6 +179,11 @@ export function Testimonials() {
     ['OA', 'Omar Al-Khatib', 'Founder & Strategy Consultant', 'This was not just a qualification. It made my next chapter feel both possible and properly recognised.'],
     ['EF', 'Elena Fischer', 'Corporate Learning Lead', 'The team understood the reality of a full professional life and designed the path around it.'],
   ];
+  const portraits = {
+    DMR: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&h=160&q=80',
+    OA: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&h=160&q=80',
+    EF: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=160&h=160&q=80',
+  };
   return (
     <Section tone="dark3">
       <div className="container">
@@ -191,7 +196,7 @@ export function Testimonials() {
         <div className="testimonials">
           {stories.map(([initials, name, role, quote]) => (
             <article key={initials}>
-              <span className="avatar">{initials}</span>
+              <img className="avatar" src={portraits[initials]} alt={name} width="80" height="80" loading="lazy" decoding="async" />
               <h3>{name}</h3>
               <small>{role}</small>
               <blockquote>{quote}</blockquote>
